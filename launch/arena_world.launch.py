@@ -4,6 +4,7 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+from launch.actions import AppendEnvironmentVariable
 
 
 def generate_launch_description():
@@ -23,7 +24,7 @@ def generate_launch_description():
                 'gz_sim.launch.py'
             )
         ),
-        launch_arguments={'gz_args': world_path}.items()
+        launch_arguments={'gz_args': ['-r ', world_path]}.items()
     )
 
     ld.add_action(gazebo)
@@ -45,6 +46,27 @@ def generate_launch_description():
     )
 
     ld.add_action(turtlebot3_spawn)
+
+    robot_state_publisher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('turtlebot3_gazebo'),
+                'launch',
+                'robot_state_publisher.launch.py'
+            )
+        ),
+        launch_arguments={'use_sim_time': 'true'}.items()
+    )
+    ld.add_action(robot_state_publisher)
+
+    set_env_vars_resources = AppendEnvironmentVariable(
+        'GZ_SIM_RESOURCE_PATH',
+        os.path.join(
+            get_package_share_directory('turtlebot3_gazebo'),
+            'models'
+        )
+    )
+    ld.add_action(set_env_vars_resources)
 
     return ld
 
