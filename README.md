@@ -15,12 +15,6 @@ This project drives a TurtleBot3 Waffle through a full autonomous coverage pipel
 ## Prerequisites
 
 - ROS2 Jazzy, Gazebo Harmonic, and this workspace built (`colcon build`, then `source install/setup.bash`).
-- **NVIDIA hybrid-graphics laptops:** on this development machine, Gazebo silently rendered on the integrated GPU without the exports below, causing severe intermittent lag (`real_time_factor` oscillating between 0.02 and 1.04). If you notice similar lag on an NVIDIA Optimus/Prime laptop, export these in the terminal that launches Gazebo before running it:
-  ```bash
-  export __NV_PRIME_RENDER_OFFLOAD=1
-  export __GLX_VENDOR_LIBRARY_NAME=nvidia
-  ```
-  This is a device-specific workaround, not a general requirement — skip it if Gazebo already renders smoothly on your machine.
 
 ## Step 1 — Mapping
 
